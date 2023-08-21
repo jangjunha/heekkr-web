@@ -39,7 +39,8 @@ const App = (): React.ReactElement => {
           <button
             type="submit"
             onClick={handleSearch}
-            className="ml-2 px-4 bg-blue-700 text-white shadow-sm rounded-md"
+            disabled={libraryIds.length === 0}
+            className="ml-2 px-4 bg-blue-700 [&:disabled]:bg-slate-200 text-white shadow-sm rounded-md"
           >
             검색
           </button>
