@@ -1,12 +1,71 @@
 import { useEffect, useState } from "react";
 import { getLibraries, useSearch } from "../api";
+import { HoldingStatus } from "@heekkr/heekkr/heekkr/holding_pb";
 import { Library } from "@heekkr/heekkr/heekkr/library_pb";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
+import classNames from "classnames";
 
 export interface SearchProps {
   keyword: string;
   libraryIds: string[];
 }
+
+const Status = ({
+  status,
+}: {
+  status: HoldingStatus | undefined;
+}): React.ReactElement => {
+  if (status === undefined) {
+    return <></>;
+  }
+  const common = classNames("ml-2 px-2 rounded-md text-white");
+  switch (status.getStateOneofCase()) {
+    case HoldingStatus.StateOneofCase.STATE_ONEOF_NOT_SET:
+      return <></>;
+    case HoldingStatus.StateOneofCase.AVAILABLE: {
+      const detail = status.getAvailable()?.getDetail();
+      const detailElem = detail && (
+        <span className="ml-1 text-sm">({detail})</span>
+      );
+      return (
+        <p className={classNames("bg-blue-600", common)}>
+          대출가능{detailElem}
+        </p>
+      );
+    }
+    case HoldingStatus.StateOneofCase.ON_LOAN: {
+      const due = status.getOnLoan()?.getDue()?.getDate();
+      const dueElem =
+        due != null ? (
+          <span className="ml-1 text-sm">
+            ..(
+            {[
+              due.getYear(),
+              due.getMonth().toString().padStart(2, "0"),
+              due.getDay().toString().padStart(2, "0"),
+            ].join("-")}
+            )
+          </span>
+        ) : (
+          false
+        );
+      return (
+        <p className={classNames("bg-orange-600", common)}>대출중{dueElem}</p>
+      );
+    }
+    case HoldingStatus.StateOneofCase.UNAVAILABLE: {
+      const detail = status.getUnavailable()?.getDetail();
+      const detailElem = detail && (
+        <span className="ml-1 text-sm">({detail})</span>
+      );
+      return (
+        <p className={classNames("bg-slate-600", common)}>
+          대출불가{detailElem}
+        </p>
+      );
+    }
+  }
+};
 
 const Search = ({ keyword, libraryIds }: SearchProps): React.ReactElement => {
   const state = useSearch({ keyword, libraryIds });
@@ -58,10 +117,9 @@ const Search = ({ keyword, libraryIds }: SearchProps): React.ReactElement => {
                 />
                 <div>
                   <h3 dangerouslySetInnerHTML={{ __html: title }} />
-                  <p>{entity.getScore()}</p>
-                  <p>{author}</p>
+                  <p dangerouslySetInnerHTML={{ __html: author }} />
                   <p>
-                    {publisher}
+                    <span dangerouslySetInnerHTML={{ __html: author }} />
                     {publishDate && (
                       <span className="ml-1">{`(${publishDate.getYear()})`}</span>
                     )}
@@ -83,6 +141,7 @@ const Search = ({ keyword, libraryIds }: SearchProps): React.ReactElement => {
                         </p>
                         <p>{holding.getLocation()}</p>
                         <p>{holding.getCallNumber()}</p>
+                        <Status status={holding.getStatus()} />
                       </li>
                     ))}
                   </ul>
