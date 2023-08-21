@@ -25,13 +25,13 @@ export const getLibraries = (keyword?: string): Promise<Library[]> =>
     });
   });
 
-type FetchState<T> =
+export type FetchState<T> =
   | { state: "loading" }
   | { state: "streaming"; result: T }
   | { state: "done"; result: T }
   | { state: "error"; error: Status };
 
-interface SearchParams {
+export interface SearchParams {
   keyword: string;
   libraryIds: string[];
 }

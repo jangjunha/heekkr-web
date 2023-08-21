@@ -1,19 +1,23 @@
+import { ArrowPathIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 
 import LibraryFilter from "./components/LibraryFilter";
-import Search, { SearchProps } from "./components/Search";
+import Search from "./components/Search";
+import { SearchParams, useSearch } from "./api";
 
 const App = (): React.ReactElement => {
   const [keyword, setKeyword] = useState("");
   const [libraryIds, setLibraryIds] = useState<string[]>([]);
 
-  const [searchParams, setSearchParams] = useState<SearchProps>({
+  const [searchParams, setSearchParams] = useState<SearchParams>({
     keyword: "",
     libraryIds: [],
   });
   const handleSearch = (): void => {
     setSearchParams({ keyword, libraryIds });
   };
+
+  const state = useSearch(searchParams);
 
   return (
     <>
@@ -39,13 +43,17 @@ const App = (): React.ReactElement => {
           <button
             type="submit"
             onClick={handleSearch}
-            disabled={libraryIds.length === 0}
+            disabled={state.state === "loading" || libraryIds.length === 0}
             className="ml-2 px-4 bg-blue-700 [&:disabled]:bg-slate-200 text-white shadow-sm rounded-md"
           >
-            검색
+            {state.state === "loading" ? (
+              <ArrowPathIcon className="animate-spin h-6 w-6 text-white" />
+            ) : (
+              "검색"
+            )}
           </button>
         </div>
-        <Search {...searchParams} />
+        <Search state={state} />
       </section>
     </>
   );

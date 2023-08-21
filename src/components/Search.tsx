@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { getLibraries, useSearch } from "../api";
+import { SearchEntity } from "@heekkr/heekkr/heekkr/api_pb";
 import { HoldingStatus } from "@heekkr/heekkr/heekkr/holding_pb";
 import { Library } from "@heekkr/heekkr/heekkr/library_pb";
 import { ChevronRightIcon } from "@heroicons/react/20/solid";
 import classNames from "classnames";
 
+import { FetchState, getLibraries } from "../api";
+
 export interface SearchProps {
-  keyword: string;
-  libraryIds: string[];
+  state: FetchState<[string, SearchEntity][]>;
 }
 
 const Status = ({
@@ -38,13 +39,12 @@ const Status = ({
       const dueElem =
         due != null ? (
           <span className="ml-1 text-sm">
-            ..(
+            ..
             {[
               due.getYear(),
               due.getMonth().toString().padStart(2, "0"),
               due.getDay().toString().padStart(2, "0"),
             ].join("-")}
-            )
           </span>
         ) : (
           false
@@ -67,10 +67,8 @@ const Status = ({
   }
 };
 
-const Search = ({ keyword, libraryIds }: SearchProps): React.ReactElement => {
-  const state = useSearch({ keyword, libraryIds });
+const Search = ({ state }: SearchProps): React.ReactElement => {
   const [libraries, setLibraries] = useState<Library[]>([]);
-
   useEffect(() => {
     const load = async () => {
       const libraries = await getLibraries();
