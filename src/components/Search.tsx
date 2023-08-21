@@ -119,7 +119,7 @@ const Search = ({ keyword, libraryIds }: SearchProps): React.ReactElement => {
                   <h3 dangerouslySetInnerHTML={{ __html: title }} />
                   <p dangerouslySetInnerHTML={{ __html: author }} />
                   <p>
-                    <span dangerouslySetInnerHTML={{ __html: author }} />
+                    <span dangerouslySetInnerHTML={{ __html: publisher }} />
                     {publishDate && (
                       <span className="ml-1">{`(${publishDate.getYear()})`}</span>
                     )}
