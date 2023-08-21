@@ -43,10 +43,10 @@ const App = (): React.ReactElement => {
           <button
             type="submit"
             onClick={handleSearch}
-            disabled={state.state === "loading" || libraryIds.length === 0}
+            disabled={libraryIds.length === 0}
             className="ml-2 px-4 bg-blue-700 [&:disabled]:bg-slate-200 text-white shadow-sm rounded-md"
           >
-            {state.state === "loading" ? (
+            {state.state === "loading" || state.state === "streaming" ? (
               <ArrowPathIcon className="animate-spin h-6 w-6 text-white" />
             ) : (
               "검색"
