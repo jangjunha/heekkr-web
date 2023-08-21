@@ -1,35 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+import LibraryFilter from "./components/LibraryFilter";
+import Search, { SearchProps } from "./components/Search";
+
+const App = (): React.ReactElement => {
+  const [keyword, setKeyword] = useState("");
+  const [libraryIds, setLibraryIds] = useState<string[]>([]);
+
+  const [searchParams, setSearchParams] = useState<SearchProps>({
+    keyword: "",
+    libraryIds: [],
+  });
+  const handleSearch = (): void => {
+    setSearchParams({ keyword, libraryIds });
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <header className="flex items-baseline">
+        <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">힉</h1>
+        <p className="ml-3 text-gray-700">도서관 통합검색</p>
+      </header>
+      <LibraryFilter value={libraryIds} onChange={setLibraryIds} />
+      <section>
+        <div className="flex">
+          <input
+            type="text"
+            placeholder="검색어를 입력하세요"
+            value={keyword}
+            onChange={(e): void => setKeyword(e.currentTarget.value)}
+            onKeyDown={(e): void => {
+              if (e.key == "Enter") {
+                handleSearch();
+              }
+            }}
+            className="border-slate-100 rounded-md flex-1 shadow-sm"
+          />
+          <button
+            type="submit"
+            onClick={handleSearch}
+            className="ml-2 px-4 bg-blue-700 text-white shadow-sm rounded-md"
+          >
+            검색
+          </button>
+        </div>
+        <Search {...searchParams} />
+      </section>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
