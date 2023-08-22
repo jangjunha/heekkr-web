@@ -100,14 +100,29 @@ const Search = ({ state }: SearchProps): React.ReactElement => {
         const author = book.getAuthor();
         const publisher = book.getPublisher();
         const publishDate = book.getPublishDate();
-        return (
-          <li key={id}>
+        const Inner = ({
+          children,
+        }: {
+          children?: React.ReactNode;
+        }): React.ReactElement =>
+          entity.getUrl() != null ? (
             <a
               href={entity.getUrl()}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex justify-between gap-x-6 py-5"
+              className="flex justify-between flex-1 gap-x-6"
             >
+              {children}
+              <div className="flex flex-col items-end justify-center">
+                <ChevronRightIcon className="h-6 w-6 text-slate-300" />
+              </div>
+            </a>
+          ) : (
+            <>{children}</>
+          );
+        return (
+          <li key={id} className="flex py-5">
+            <Inner>
               <div className="flex min-w-0 gap-x-4">
                 <div
                   className="bg-slate-900 w-1 h-full rounded-md"
@@ -145,10 +160,7 @@ const Search = ({ state }: SearchProps): React.ReactElement => {
                   </ul>
                 </div>
               </div>
-              <div className="flex flex-col items-end justify-center">
-                <ChevronRightIcon className="h-6 w-6 text-slate-300" />
-              </div>
-            </a>
+            </Inner>
           </li>
         );
       })}
