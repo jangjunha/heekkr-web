@@ -21,9 +21,9 @@ const App = (): React.ReactElement => {
 
   return (
     <>
-      <header className="flex items-baseline">
-        <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">힉</h1>
-        <p className="ml-3 text-gray-700">도서관 통합검색</p>
+      <header className="flex items-baseline text-2xl sm:text-3xl">
+        <p className="mr-3 text-gray-400">도서관 통합검색</p>
+        <h1 className="font-bold text-gray-900">heek.kr</h1>
       </header>
       <LibraryFilter value={libraryIds} onChange={setLibraryIds} />
       <section>
