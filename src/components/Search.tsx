@@ -49,8 +49,15 @@ const Status = ({
         ) : (
           false
         );
+      const requestsAvailable = status.getRequestsAvailable() && (
+        <span className="ml-1 text-sm">(예약가능)</span>
+      );
       return (
-        <p className={classNames("bg-orange-600", common)}>대출중{dueElem}</p>
+        <p className={classNames("bg-orange-600", common)}>
+          대출중
+          {dueElem}
+          {requestsAvailable}
+        </p>
       );
     }
     case HoldingStatus.StateOneofCase.UNAVAILABLE: {
