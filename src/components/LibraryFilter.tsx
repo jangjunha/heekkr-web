@@ -99,7 +99,7 @@ const LibraryFilter = ({
         <span className="font-bold ">도서관 선택</span>
         <span className="ml-4 text-sm">최대 10개</span>
       </p>
-      <div className="mb-2 flex gap-x-4">
+      <div className="mb-2 flex flex-wrap gap-4">
         <div>
           <input
             type="text"
