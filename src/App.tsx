@@ -55,6 +55,19 @@ const App = (): React.ReactElement => {
         </div>
         <Search state={state} />
       </section>
+      <footer className="mt-8">
+        <p>
+          DNS powered by: 안정적인 DNS서비스{" "}
+          <a
+            href="http://www.dnsever.com"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span style={{ color: "#1111f1" }}>DNS</span>
+            <span style={{ color: "#f11111" }}>Ever</span>
+          </a>
+        </p>
+      </footer>
     </>
   );
 };
